@@ -53,3 +53,50 @@ const startPage = () => {
         }
     });
 };
+
+const viewEmployees = () => {
+    connection.query(
+        'Select employee.id, first-name, last-name, title, salary, department-name, manager-id',
+        function (err, res) {
+            if (err) throw err;
+            console.table(res);
+            startPage();
+        }
+    )
+};
+
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            name: 'first-name',
+            type: 'input',
+            message: "What is the employee's first name?"
+        },
+        {
+            name: 'last-name',
+            type: 'input',
+            message: "What is the employee's last name?"
+        },
+        {
+            name: 'JobId',
+            type: 'input',
+            message: "what is the employee's job id?"
+        },
+        {
+            name: 'managerId',
+            type: 'input',
+            messgae: "what is the message Id?",
+        },
+    ])
+    .then(answer => {
+        connection.query(
+            'Insert into employee (first-name, last-name. job-id, manager-id',
+            [answer.firstName, answer.lastName, answer.jobId, answer.managerId],
+            function (err, res) {
+                if (err) throw err;
+                console.log('Added!');
+                startPage();
+            }
+        );
+    });
+};
