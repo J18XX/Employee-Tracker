@@ -100,3 +100,58 @@ const addEmployee = () => {
         );
     });
 };
+
+const updateEmployee = () => {
+    inquirer.prompt([
+        {
+            name: 'Id',
+            type: 'input',
+            message: "Please enter employee's Id",
+        },
+        {
+            name: 'jobId',
+            type: 'input',
+            message: 'Please enter new job Id',
+        },
+    ])
+    .then(answer => {
+        connection.query(
+            "Update employee set job_id=? Where id=?",
+            [answer.jobId, answer.id],
+            function (err, res) {
+                if (err) throw (err);
+                console.log("Employee Updated");
+                startPage();
+            }
+        );
+    });
+};
+
+const viewAllDepartments = () => {
+    connection.query('Select from department', function (err, res) {
+        if (err) throw (err);
+        console.table(res);
+        startPage();
+    });
+};
+
+const addDepartment = () => {
+    inquirer.prompt([
+        {
+            name: 'department',
+            type: 'input',
+            message: "What is the new department's name?",
+        },
+    ])
+    .then(answer => {
+        connection.query(
+            'Insert into department (department name)',
+            [answer.department],
+            function (err, res) {
+                if (err) throw (err);
+                console.log('Department added.');
+                startPage();
+            }
+        )
+    })
+}
